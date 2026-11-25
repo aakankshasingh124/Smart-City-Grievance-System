@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>जनसहायक AI | JanSahayak AI — राष्ट्रीय नागरिक शिकायत एवं निवारण प्रणाली</title>
+    <meta name="description" content="AI-Powered Public Grievance Reporting and Tracking System for Indian Municipal Corporations & Public Authorities." />
+    
+    <!-- Authentic Indian 24-Spoke Ashoka Chakra + Jan Emblem Favicon (Data URI + PNG + ICO) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Ccircle cx='64' cy='64' r='62' fill='%23FFFFFF' stroke='%23FFB300' stroke-width='4'/%3E%3Cpath d='M64,6 A58,58 0 0,1 120,48 L94,54 A32,32 0 0,0 64,32 Z M64,6 A58,58 0 0,0 8,48 L34,54 A32,32 0 0,1 64,32 Z' fill='%23FF9933'/%3E%3Cpath d='M64,122 A58,58 0 0,1 8,80 L34,74 A32,32 0 0,0 64,96 Z M64,122 A58,58 0 0,0 120,80 L94,74 A32,32 0 0,1 64,96 Z' fill='%23138808'/%3E%3Ccircle cx='64' cy='64' r='32' fill='%23061c47' stroke='%23FFE082' stroke-width='2'/%3E%3Cg stroke='%2338bdf8' stroke-width='1.5'%3E%3Cline x1='64' y1='36' x2='64' y2='92'/%3E%3Cline x1='64' y1='36' x2='64' y2='92' transform='rotate(15 64 64)'/%3E%3Cline x1='64' y1='36' x2='64' y2='92' transform='rotate(30 64 64)'/%3E%3Cline x1='64' y1='36' x2='64' y2='92' transform='rotate(45 64 64)'/%3E%3Cline x1='64' y1='36' x2='64' y2='92' transform='rotate(60 64 64)'/%3E%3Cline x1='64' y1='36' x2='64' y2='92' transform='rotate(75 64 64)'/%3E%3Cline x1='64' y1='36' x2='64' y2='92' transform='rotate(90 64 64)'/%3E%3Cline x1='64' y1='36' x2='64' y2='92' transform='rotate(105 64 64)'/%3E%3Cline x1='64' y1='36' x2='64' y2='92' transform='rotate(120 64 64)'/%3E%3Cline x1='64' y1='36' x2='64' y2='92' transform='rotate(135 64 64)'/%3E%3Cline x1='64' y1='36' x2='64' y2='92' transform='rotate(150 64 64)'/%3E%3Cline x1='64' y1='36' x2='64' y2='92' transform='rotate(165 64 64)'/%3E%3C/g%3E%3Ccircle cx='64' cy='64' r='18' fill='%2304122d' stroke='%23FFB300' stroke-width='1.5'/%3E%3Ctext x='64' y='73' font-family='sans-serif' font-size='24' font-weight='900' fill='%23FFFFFF' text-anchor='middle'%3Eजन%3C/text%3E%3C/svg%3E" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/images/favicon.png" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/images/ashoka_emblem.png" />
+
+    <!-- Google Fonts: Inter & Noto Sans Devanagari for authentic Indian typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        civic: {
+                            saffron: '#f97316',
+                            saffronDark: '#ea580c',
+                            navy: '#0b2545',
+                            navyDark: '#07172c',
+                            green: '#059669',
+                            greenDark: '#047857',
+                            gold: '#d97706',
+                            goldLight: '#fef3c7',
+                            ivory: '#fcfaf6'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans Devanagari', 'sans-serif'],
+                        devanagari: ['Noto Sans Devanagari', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Leaflet CSS & JS for OpenStreetMap -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Custom Authentic Indian Civic Stylesheet -->
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body class="h-full flex flex-col text-slate-800 antialiased indian-jaali-bg selection:bg-orange-500 selection:text-white">
+
+    <!-- Main Single Page Application Container -->
+    <div id="app" class="flex-1 flex flex-col">
+
+        
+        <div class="tiranga-top-bar"></div>
+        <header class="sticky top-0 z-40 nav-glass shadow-xs">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <!-- Brand Logo with Indian Ashoka Chakra & Jan Emblem -->
+                    <div class="flex items-center space-x-3 cursor-pointer" onclick="App.navigate('home')">
+                        <div class="relative w-11 h-11 rounded-full bg-white flex items-center justify-center shadow-md emblem-ring p-0.5 shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" class="w-full h-full">
+                                <circle cx="64" cy="64" r="62" fill="#FFFFFF" stroke="#FFB300" stroke-width="4"/>
+                                <path d="M64,6 A58,58 0 0,1 120,48 L94,54 A32,32 0 0,0 64,32 Z M64,6 A58,58 0 0,0 8,48 L34,54 A32,32 0 0,1 64,32 Z" fill="#FF9933"/>
+                                <path d="M64,122 A58,58 0 0,1 8,80 L34,74 A32,32 0 0,0 64,96 Z M64,122 A58,58 0 0,0 120,80 L94,74 A32,32 0 0,1 64,96 Z" fill="#138808"/>
+                                <circle cx="64" cy="64" r="32" fill="#061c47" stroke="#FFE082" stroke-width="2"/>
+                                <g stroke="#38bdf8" stroke-width="1.4">
+                                    <line x1="64" y1="36" x2="64" y2="92"/>
+                                    <line x1="64" y1="36" x2="64" y2="92" transform="rotate(15 64 64)"/>
+                                    <line x1="64" y1="36" x2="64" y2="92" transform="rotate(30 64 64)"/>
+                                    <line x1="64" y1="36" x2="64" y2="92" transform="rotate(45 64 64)"/>
+                                    <line x1="64" y1="36" x2="64" y2="92" transform="rotate(60 64 64)"/>
+                                    <line x1="64" y1="36" x2="64" y2="92" transform="rotate(75 64 64)"/>
+                                    <line x1="64" y1="36" x2="64" y2="92" transform="rotate(90 64 64)"/>
+                                    <line x1="64" y1="36" x2="64" y2="92" transform="rotate(105 64 64)"/>
+                                    <line x1="64" y1="36" x2="64" y2="92" transform="rotate(120 64 64)"/>
+                                    <line x1="64" y1="36" x2="64" y2="92" transform="rotate(135 64 64)"/>
+                                    <line x1="64" y1="36" x2="64" y2="92" transform="rotate(150 64 64)"/>
+                                    <line x1="64" y1="36" x2="64" y2="92" transform="rotate(165 64 64)"/>
+                                </g>
+                                <circle cx="64" cy="64" r="18" fill="#04122d" stroke="#FFB300" stroke-width="1.5"/>
+                                <text x="64" y="73" font-family="'Noto Sans Devanagari', sans-serif" font-size="24" font-weight="900" fill="#FFFFFF" text-anchor="middle">जन</text>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="flex items-center space-x-1.5">
+                                <span class="font-extrabold text-xl tracking-tight text-slate-900 font-devanagari">जनसहायक</span>
+                                <span class="font-bold text-lg tracking-tight text-blue-900">AI</span>
+                                <span class="px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-gradient-to-r from-orange-100 to-amber-100 text-orange-800 border border-orange-200">भारत</span>
+                            </div>
+                            <p class="text-[10px] text-slate-500 font-semibold tracking-wide">नागरिक समाधान मंच • National Civic Redressal</p>
+                        </div>
+                    </div>
+
+                    <!-- Desktop Nav Links -->
+                    <nav class="hidden md:flex items-center space-x-1 font-medium text-sm text-slate-700">
+                        <button onclick="App.navigate('home')" class="px-3 py-2 rounded-xl hover:text-orange-700 hover:bg-orange-50/70 transition text-orange-700 font-bold bg-orange-50 border border-orange-200/60">
+                            Home / मुख्य पृष्ठ
+                        </button>
+                        <button onclick="App.openReportModal()" class="px-3.5 py-2 rounded-xl text-white bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 hover:from-orange-700 hover:to-amber-700 font-bold shadow-xs hover:shadow transition flex items-center space-x-1.5">
+                            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                            <span>शिकायत दर्ज करें</span>
+                        </button>
+                        <button onclick="App.navigate('track')" class="px-3 py-2 rounded-xl hover:text-blue-700 hover:bg-blue-50/70 transition ">
+                            Track Complaint
+                        </button>
+                        
+                        
+                        
+                        <button onclick="App.openModal('about')" class="px-3 py-2 rounded-lg hover:text-blue-700 hover:bg-slate-100 transition">
+                            About Us
+                        </button>
+                        <button onclick="App.openModal('contact')" class="px-3 py-2 rounded-lg hover:text-blue-700 hover:bg-slate-100 transition">
+                            Contact
+                        </button>
+                    </nav>
+
+                    <!-- Right Action Controls (Auth, Notifications, Staff Switcher) -->
+                    <div class="flex items-center space-x-2.5">
+                        
+                        <!-- Citizen Login -->
+                        <button onclick="App.openModal('citizen-login')" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-700 hover:text-blue-700 hover:bg-slate-100 transition">
+                            Citizen Login
+                        </button>
+                        <!-- Staff Login -->
+                        <button onclick="App.openModal('staff-login')" class="px-3.5 py-1.5 rounded-xl text-sm font-semibold bg-slate-900 text-white hover:bg-slate-800 transition shadow-xs">
+                            Staff Portal
+                        </button>
+                        
+
+                        <!-- Mobile Hamburger Button -->
+                        <button onclick="Navbar.toggleMobileMenu()" class="md:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Drawer -->
+                <div id="mobile-menu" class="hidden md:hidden py-3 border-t border-slate-200 space-y-1">
+                    <button onclick="App.navigate('home')" class="block w-full text-left px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-100 font-medium">Home</button>
+                    <button onclick="App.openReportModal()" class="block w-full text-left px-3 py-2 rounded-lg text-sm text-emerald-700 hover:bg-emerald-50 font-bold">Report an Issue</button>
+                    <button onclick="App.navigate('track')" class="block w-full text-left px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-100 font-medium">Track Complaint</button>
+                    
+                    
+                    
+                    <button onclick="App.openModal('about')" class="block w-full text-left px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-100">About Us</button>
+                    <button onclick="App.openModal('contact')" class="block w-full text-left px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-100">Contact</button>
+                </div>
+            </div>
+        </header>
+        
+        <main class="min-h-[calc(100vh-280px)]">
+            
+        <!-- Hero Section with Indian Civic Flag Theme & Citizens Imagery -->
+        <section class="relative py-12 sm:py-20 border-b border-amber-900/10 overflow-hidden hero-mandala-bg">
+            <!-- Subtle Tiranga radial gradient aura -->
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-200/30 via-orange-100/15 to-emerald-100/20 pointer-events-none"></div>
+
+            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                    <!-- Left Column: Civic Headings, Bilingual Motto & Actions (7 cols) -->
+                    <div class="lg:col-span-7 text-left space-y-5">
+                        <!-- National Motto & Emblem Badge -->
+                        <div class="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-amber-100 via-white to-emerald-100 border border-amber-300 text-slate-800 text-xs font-bold shadow-xs">
+                            <svg viewBox="0 0 100 100" class="w-4 h-4 shrink-0" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="50" r="46" fill="#0b2545" stroke="#f59e0b" stroke-width="4"/>
+                                <circle cx="50" cy="50" r="20" fill="#1e3a8a"/>
+                                <g stroke="#38bdf8" stroke-width="2.5">
+                                    <line x1="50" y1="12" x2="50" y2="88"/>
+                                    <line x1="12" y1="50" x2="88" y2="50"/>
+                                    <line x1="23" y1="23" x2="77" y2="77"/>
+                                    <line x1="23" y1="77" x2="77" y2="23"/>
+                                </g>
+                                <circle cx="50" cy="50" r="8" fill="#f59e0b"/>
+                            </svg>
+                            <span class="text-amber-800 font-devanagari font-black tracking-wide">सत्यमेव जयते</span>
+                            <span class="text-slate-300">•</span>
+                            <span class="text-slate-700">राष्ट्रीय नागरिक शिकायत एवं निवारण प्रणाली</span>
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        </div>
+
+                        <!-- Main Bilingual Indian Headline -->
+                        <div>
+                            <span class="font-devanagari font-black text-2xl sm:text-3xl text-orange-700 tracking-wide block mb-1">
+                                आपकी आवाज़ • आपका शहर • आपका समाधान
+                            </span>
+                            <h1 class="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+                                Smart AI Civic Redressal for<br/>
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-amber-600 to-emerald-700">
+                                    Indian Cities & Municipalities
+                                </span>
+                            </h1>
+                        </div>
+
+                        <p class="text-base sm:text-lg text-slate-700 leading-relaxed font-normal max-w-2xl">
+                            Report waste accumulation, potholes, power outages, and public civil grievances directly to your Municipal Corporation & Ward Officers. Verified with geo-tagging, duplicate detection, and live transparent tracking.
+                        </p>
+
+                        <!-- Action CTA Buttons with Indian Aesthetic -->
+                        <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
+                            <button onclick="App.openReportModal()" class="px-7 py-3.5 rounded-2xl bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 text-white font-extrabold text-sm sm:text-base shadow-lg shadow-orange-500/25 hover:from-orange-700 hover:to-amber-700 hover:shadow-xl hover:shadow-orange-500/35 transform hover:-translate-y-0.5 transition flex items-center justify-center space-x-2 border border-orange-400/40">
+                                <svg class="w-5 h-5 text-amber-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+                                </svg>
+                                <span>समस्या दर्ज करें (Report Issue)</span>
+                            </button>
+
+                            <button onclick="App.navigate('track')" class="px-7 py-3.5 rounded-2xl bg-white/95 border-2 border-slate-300 text-slate-800 font-extrabold text-sm sm:text-base shadow-xs hover:bg-amber-50 hover:border-amber-400 transition flex items-center justify-center space-x-2">
+                                <svg class="w-5 h-5 text-blue-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                                <span>स्थिति जांचें (Track Status)</span>
+                            </button>
+                        </div>
+
+                        <!-- Fast Demo Search Box -->
+                        <div class="pt-1 max-w-lg">
+                            <form onsubmit="Home.handleQuickTrack(event)" class="relative flex items-center">
+                                <input id="quick-track-input" type="text" placeholder="Enter Complaint ID (e.g. JS-2026-000101)..."
+                                       class="w-full pl-4 pr-24 py-3 rounded-2xl border-2 border-amber-300/80 bg-white/95 shadow-sm text-xs font-mono focus:outline-none focus:ring-2 focus:ring-orange-500" />
+                                <button type="submit" class="absolute right-1.5 px-4 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition">
+                                    Track
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- 3 Civic Trust Features -->
+                        <div class="pt-2 flex flex-wrap items-center gap-3 text-xs text-slate-600 font-medium">
+                            <span class="inline-flex items-center space-x-1.5 bg-white/90 px-3 py-1.5 rounded-xl border border-amber-200">
+                                <span>🛡️</span>
+                                <span>100% Masked Privacy</span>
+                            </span>
+                            <span class="inline-flex items-center space-x-1.5 bg-white/90 px-3 py-1.5 rounded-xl border border-amber-200">
+                                <span>📍</span>
+                                <span>GPS Geo-tagged</span>
+                            </span>
+                            <span class="inline-flex items-center space-x-1.5 bg-white/90 px-3 py-1.5 rounded-xl border border-amber-200">
+                                <span>⚡</span>
+                                <span>Ward Officer Routing</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Authentic Indian Citizens Illustration & Civic Pride Card (5 cols) -->
+                    <div class="lg:col-span-5">
+                        <div class="relative bg-white/95 rounded-3xl p-3 border-2 border-amber-300/80 shadow-2xl overflow-hidden group">
+                            <!-- Top Indian Tricolor Ribbon -->
+                            <div class="h-2 w-full rounded-t-xl bg-gradient-to-r from-orange-500 via-white to-emerald-600 mb-2"></div>
+
+                            <!-- Indian Citizens Illustration -->
+                            <div class="w-full rounded-2xl overflow-hidden border border-amber-200/60 shadow-inner bg-slate-50">
+                                <img src="/images/indian_citizens_hero.svg" alt="JanSahayak Indian Citizens and Civic Redressal" class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition duration-300" />
+                            </div>
+
+                            <!-- Card Caption & Live Civic Badge -->
+                            <div class="pt-3 px-2 flex items-center justify-between text-xs">
+                                <div>
+                                    <span class="font-devanagari font-black text-slate-900 block text-sm">जनसहयोग से स्वच्छ और सुरक्षित शहर</span>
+                                    <span class="text-[11px] text-slate-500">Citizen Participation • Municipal Action</span>
+                                </div>
+                                <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-[10px] flex items-center space-x-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    <span>Live 24x7</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Four Main Complaint Categories with Indian Civic Symbols -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-orange-800 bg-orange-100/80 border border-orange-200 px-3.5 py-1 rounded-full">
+                    नागरिक सेवाएं • Civic Redressal Domains
+                </span>
+                <h2 class="text-3xl font-black text-slate-900 mt-3 font-devanagari">आप किस समस्या की शिकायत दर्ज करना चाहते हैं?</h2>
+                <p class="text-slate-600 mt-2 text-sm sm:text-base">
+                    Select your civic grievance category. Our automated AI engine inspects photos, pinpoints the municipal ward, and routes the ticket directly to the nodal officer.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- 1. Waste Management (Swachh Bharat) -->
+                <div class="category-card category-waste rounded-3xl p-6 shadow-sm flex flex-col justify-between border border-emerald-100">
+                    <div class="indian-corner-accent"></div>
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-50 border-2 border-emerald-300 p-2 flex items-center justify-center mb-4 shadow-sm">
+                            <svg viewBox="0 0 64 64" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="32" cy="32" r="28" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+                                <path d="M22 26L25 50C25 51.1 25.9 52 27 52H37C38.1 52 39 51.1 39 50L42 26" fill="#059669"/>
+                                <rect x="20" y="21" width="24" height="5" rx="2" fill="#047857"/>
+                                <path d="M28 21V18C28 17.4 28.4 17 29 17H35C35.6 17 36 17.4 36 18V21" stroke="#047857" stroke-width="2.2"/>
+                                <circle cx="28" cy="34" r="3.5" fill="#FFFFFF" stroke="#047857" stroke-width="1.6"/>
+                                <circle cx="36" cy="34" r="3.5" fill="#FFFFFF" stroke="#047857" stroke-width="1.6"/>
+                                <path d="M31.5 34H32.5" stroke="#047857" stroke-width="1.6"/>
+                                <path d="M43 14C46 14 49 16 49 19C46 19 43 17 43 14Z" fill="#10B981"/>
+                                <circle cx="50" cy="23" r="2.5" fill="#F59E0B"/>
+                            </svg>
+                        </div>
+                        <span class="text-[11px] font-bold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-full font-devanagari">स्वच्छ भारत अभियान</span>
+                        <h3 class="text-base font-extrabold text-slate-900 mt-2 mb-1.5">अपशिष्ट एवं स्वच्छता<br/><span class="text-xs font-bold text-slate-600">Waste Management</span></h3>
+                        <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+                            Report garbage piles, overflowing public dustbins, illegal dumping, and choked drains.
+                        </p>
+                        <ul class="text-xs text-slate-600 space-y-1.5 mb-6">
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2"></span>Overflowing community dustbins</li>
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2"></span>Illegal commercial dumping</li>
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2"></span>Uncollected household waste</li>
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2"></span>Drainage blocked by trash</li>
+                        </ul>
+                    </div>
+                    <button onclick="App.openReportModal({ category: 'Waste Management' })"
+                            class="w-full py-2.5 px-4 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 text-xs font-bold transition flex items-center justify-center space-x-1.5 border border-emerald-200">
+                        <span>Report Waste Issue • शिकायत करें</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+
+                <!-- 2. Traffic Management (Vahan & Road Suraksha) -->
+                <div class="category-card category-traffic rounded-3xl p-6 shadow-sm flex flex-col justify-between border border-amber-100">
+                    <div class="indian-corner-accent"></div>
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-amber-50 border-2 border-amber-300 p-2 flex items-center justify-center mb-4 shadow-sm">
+                            <svg viewBox="0 0 64 64" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="32" cy="32" r="28" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
+                                <path d="M32 11L47 17V33C47 42 40 50 32 53C24 50 17 42 17 33V17L32 11Z" fill="#B45309"/>
+                                <path d="M32 14L44 19V32C44 40 38.5 47 32 50C25.5 47 20 40 20 32V19L32 14Z" fill="#D97706"/>
+                                <rect x="27" y="21" width="10" height="24" rx="4" fill="#1E293B"/>
+                                <circle cx="32" cy="25" r="2.8" fill="#EF4444"/>
+                                <circle cx="32" cy="33" r="2.8" fill="#FBBF24"/>
+                                <circle cx="32" cy="41" r="2.8" fill="#10B981"/>
+                            </svg>
+                        </div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-[11px] font-bold text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded-full font-devanagari">सड़क सुरक्षा</span>
+                            <span class="text-[10px] font-bold text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">Urgent Flag</span>
+                        </div>
+                        <h3 class="text-base font-extrabold text-slate-900 mb-1.5">यातायात एवं सड़क सुरक्षा<br/><span class="text-xs font-bold text-slate-600">Traffic Management</span></h3>
+                        <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+                            Signal blackouts, dangerous potholes, illegal encroachment, and damaged road dividers.
+                        </p>
+                        <ul class="text-xs text-slate-600 space-y-1.5 mb-6">
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-2"></span>Traffic signal blackout/malfunction</li>
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-2"></span>Hazardous potholes & craters</li>
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-2"></span>Illegal parking & encroachment</li>
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-2"></span>Broken dividers & traffic signs</li>
+                        </ul>
+                    </div>
+                    <button onclick="App.openReportModal({ category: 'Traffic Management' })"
+                            class="w-full py-2.5 px-4 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-bold transition flex items-center justify-center space-x-1.5 border border-amber-200">
+                        <span>Report Road Hazard • शिकायत करें</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+
+                <!-- 3. Energy Issues (Vidyut Board) -->
+                <div class="category-card category-energy rounded-3xl p-6 shadow-sm flex flex-col justify-between border border-purple-100">
+                    <div class="indian-corner-accent"></div>
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-purple-50 border-2 border-purple-300 p-2 flex items-center justify-center mb-4 shadow-sm">
+                            <svg viewBox="0 0 64 64" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="32" cy="32" r="28" fill="#F3E8FF" stroke="#A855F7" stroke-width="2"/>
+                                <path d="M23 52V22C23 16 27 13 33 13C37 13 41 15 41 19H45" stroke="#6B21A8" stroke-width="3" stroke-linecap="round"/>
+                                <path d="M39 19H47L45 24H41L39 19Z" fill="#7E22CE"/>
+                                <path d="M40 24L33 38H53L46 24Z" fill="#FDE047" opacity="0.45"/>
+                                <path d="M33 21L22 36H31L27 50L43 32H33L38 21H33Z" fill="#EAB308" stroke="#A16207" stroke-width="1.5" stroke-linejoin="round"/>
+                                <circle cx="48" cy="34" r="2.5" fill="#F97316"/>
+                            </svg>
+                        </div>
+                        <span class="text-[11px] font-bold text-purple-800 bg-purple-100/80 px-2 py-0.5 rounded-full font-devanagari">विद्युत एवं प्रकाश व्यवस्था</span>
+                        <h3 class="text-base font-extrabold text-slate-900 mt-2 mb-1.5">ऊर्जा एवं स्ट्रीट लाइट<br/><span class="text-xs font-bold text-slate-600">Energy & Power Issues</span></h3>
+                        <p class="text-xs text-slate-600 mb-3 leading-relaxed">
+                            Dark streetlights, severed power lines, transformer faults, and electrical hazards.
+                        </p>
+                        <!-- Electrical Warning Badge -->
+                        <div class="p-2.5 rounded-xl bg-red-50 border border-red-200 text-[11px] text-red-800 mb-3 font-semibold">
+                            ⚡ <strong>चेतावनी / Safety:</strong> Do not approach fallen cables or sparking poles.
+                        </div>
+                        <ul class="text-xs text-slate-600 space-y-1.5 mb-6">
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-purple-500 mr-2"></span>Streetlight circuit failure</li>
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-purple-500 mr-2"></span>Exposed high-tension live wire</li>
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-purple-500 mr-2"></span>Damaged transformer / junction box</li>
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-purple-500 mr-2"></span>Persistent neighborhood blackout</li>
+                        </ul>
+                    </div>
+                    <button onclick="App.openReportModal({ category: 'Energy Issues' })"
+                            class="w-full py-2.5 px-4 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-900 text-xs font-bold transition flex items-center justify-center space-x-1.5 border border-purple-200">
+                        <span>Report Energy Issue • शिकायत करें</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+
+                <!-- 4. Miscellaneous Public Grievances (Nagar Nigam) -->
+                <div class="category-card category-misc rounded-3xl p-6 shadow-sm flex flex-col justify-between border border-blue-100">
+                    <div class="indian-corner-accent"></div>
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-blue-50 border-2 border-blue-300 p-2 flex items-center justify-center mb-4 shadow-sm">
+                            <svg viewBox="0 0 64 64" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="32" cy="32" r="28" fill="#DBEAFE" stroke="#3B82F6" stroke-width="2"/>
+                                <path d="M19 35H45V49C45 50.1 44.1 51 43 51H21C19.9 51 19 50.1 19 49V35Z" fill="#1D4ED8"/>
+                                <path d="M19 35C19 26 24.5 20 32 18C39.5 20 45 26 45 35H19Z" fill="#2563EB"/>
+                                <path d="M32 12V18" stroke="#F59E0B" stroke-width="3" stroke-linecap="round"/>
+                                <circle cx="32" cy="11" r="2.5" fill="#F59E0B"/>
+                                <rect x="23" y="37" width="3" height="11" rx="1" fill="#FFFFFF" opacity="0.9"/>
+                                <rect x="30.5" y="37" width="3" height="11" rx="1" fill="#FFFFFF" opacity="0.9"/>
+                                <rect x="38" y="37" width="3" height="11" rx="1" fill="#FFFFFF" opacity="0.9"/>
+                                <path d="M48 29C48 33.4 44.4 37 40 37C35.6 37 32 33.4 32 29C32 24.5 40 18 40 18C40 18 48 24.5 48 29Z" fill="#06B6D4" stroke="#0891B2" stroke-width="1" opacity="0.95"/>
+                            </svg>
+                        </div>
+                        <span class="text-[11px] font-bold text-blue-800 bg-blue-100/80 px-2 py-0.5 rounded-full font-devanagari">नागरिक एवं विविध सेवाएं • Civil & Misc</span>
+                        <h3 class="text-base font-extrabold text-slate-900 mt-2 mb-1.5">नागरिक एवं विविध जन शिकायतें<br/><span class="text-xs font-bold text-slate-600">Civil & Miscellaneous Grievances</span></h3>
+                        <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+                            Public property, parks, drainage, civic facilities, government services, and local civil amenities.
+                        </p>
+                        <ul class="text-xs text-slate-600 space-y-1.5 mb-6">
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2"></span>Water supply & pipeline leakages (Civil)</li>
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2"></span>Damaged public property & parks</li>
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2"></span>Drainage, sewage & manhole issues</li>
+                            <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2"></span>Public toilets & municipal amenities</li>
+                        </ul>
+                    </div>
+                    <button onclick="App.openReportModal({ category: 'Miscellaneous Public Grievances' })"
+                            class="w-full py-2.5 px-4 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-900 text-xs font-bold transition flex items-center justify-center space-x-1.5 border border-blue-200">
+                        <span>Report Civil / Misc Issue • शिकायत करें</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="bg-white/60 backdrop-blur-xs border-y border-amber-900/10 py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-700 bg-blue-100/60 px-3 py-1 rounded-full">Transparent Process</span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 mt-2">How JanSahayak AI Operates</h2>
+                    <p class="text-slate-600 mt-2 text-sm">
+                        From submission to field verification: four transparent stages ensuring citizen accountability.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+                    <!-- Step 1 -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 text-center relative shadow-2xs">
+                        <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white font-black text-xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                            1
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-base mb-2">Citizen Reports</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Pin your location on the map, describe the problem, and upload photo evidence.
+                        </p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 text-center relative shadow-2xs">
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-600 text-white font-black text-xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                            2
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-base mb-2">AI Analyzes & Routes</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            AI validates duplicate reports, calculates priority level, and routes directly to the nodal officer.
+                        </p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 text-center relative shadow-2xs">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-600 text-white font-black text-xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                            3
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-base mb-2">Field Staff Action</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Authorized personnel post timestamped progress updates, photos, and estimated resolution schedules.
+                        </p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 text-center relative shadow-2xs">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white font-black text-xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                            4
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-base mb-2">Citizen Verification</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Complainant confirms if the problem was fixed or can request a reopen with a single click.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Public Statistics Dashboard -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 pb-4 border-b border-slate-200">
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Live Municipal Metrics</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Public Grievance Dashboard</h2>
+                </div>
+                <div class="mt-4 sm:mt-0 flex items-center space-x-3">
+                    <span class="text-xs text-slate-500 font-medium">Demonstration Data:</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input id="toggle-demo-stats" type="checkbox" checked onchange="Home.toggleDemoData(this.checked)" class="sr-only peer">
+                        <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- KPI Metric Cards -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
+                    <div class="text-xs font-bold uppercase text-slate-400">Total Grievances</div>
+                    <div id="stat-total" class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2">--</div>
+                    <div class="text-[11px] text-slate-500 mt-1">Logged across municipal wards</div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
+                    <div class="text-xs font-bold uppercase text-emerald-600">Resolved Complaints</div>
+                    <div id="stat-resolved" class="text-3xl sm:text-4xl font-extrabold text-emerald-600 mt-2">--</div>
+                    <div id="stat-percent" class="text-[11px] text-emerald-700 font-semibold mt-1">--% resolution rate</div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
+                    <div class="text-xs font-bold uppercase text-amber-600">In Active Progress</div>
+                    <div id="stat-progress" class="text-3xl sm:text-4xl font-extrabold text-amber-600 mt-2">--</div>
+                    <div class="text-[11px] text-slate-500 mt-1">Field teams deployed</div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
+                    <div class="text-xs font-bold uppercase text-blue-600">Intake / Pending</div>
+                    <div id="stat-pending" class="text-3xl sm:text-4xl font-extrabold text-blue-600 mt-2">--</div>
+                    <div class="text-[11px] text-slate-500 mt-1">Under review & assignment</div>
+                </div>
+            </div>
+
+            <!-- Interactive Public Map & Category Breakdown -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Map View (2 columns) -->
+                <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-5 shadow-xs">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-base">Civic Complaints Geographic Heatmap</h3>
+                            <p class="text-xs text-slate-500">Approximate locations shown for public transparency & citizen privacy.</p>
+                        </div>
+                        <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">OpenStreetMap</span>
+                    </div>
+                    <div id="public-civic-map" class="h-96 w-full rounded-xl border border-slate-200 overflow-hidden"></div>
+                </div>
+
+                <!-- Category Breakdown (1 column) -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-base mb-4">Grievance Distribution</h3>
+                        <div id="category-bars" class="space-y-4">
+                            <!-- Populated dynamically -->
+                            <p class="text-xs text-slate-400">Loading breakdown...</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-100 bg-slate-50/80 -mx-5 -mb-5 p-4 rounded-b-2xl text-[11px] text-slate-500 leading-relaxed">
+                        🔒 <strong>Privacy Assurance:</strong> Citizen phone numbers and precise personal addresses are strictly masked on the public transparency map per Municipal Data Protection Guidelines.
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        </main>
+        
+        <div class="tiranga-top-bar mt-20"></div>
+        <footer class="bg-slate-950 text-slate-300 pt-16 pb-12 border-t border-amber-900/20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+                    <!-- Brand Info -->
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-white p-0.5 emblem-ring shrink-0 flex items-center justify-center">
+                                <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="50" cy="50" r="46" fill="#0b2545" stroke="#f59e0b" stroke-width="4"/>
+                                    <circle cx="50" cy="50" r="20" fill="#1e3a8a"/>
+                                    <g stroke="#38bdf8" stroke-width="2.5">
+                                        <line x1="50" y1="12" x2="50" y2="88"/>
+                                        <line x1="12" y1="50" x2="88" y2="50"/>
+                                        <line x1="23" y1="23" x2="77" y2="77"/>
+                                        <line x1="23" y1="77" x2="77" y2="23"/>
+                                    </g>
+                                    <circle cx="50" cy="50" r="8" fill="#f59e0b"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <span class="font-black text-xl text-white tracking-tight font-devanagari">जनसहायक AI</span>
+                                <span class="block text-[10px] text-amber-400 font-bold uppercase tracking-wider">सत्यमेव जयते • Digital India</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            A transparent civic redressal bridge connecting citizens across Indian cities with Municipal Corporations, Electricity Boards, and Traffic Police Authorities.
+                        </p>
+                        <p class="text-xs text-amber-300/80 font-devanagari font-semibold">
+                            "आपकी आवाज़, आपका शहर, आपका समाधान"
+                        </p>
+                    </div>
+
+                    <!-- Quick Navigation -->
+                    <div>
+                        <h4 class="text-amber-400 text-xs font-bold tracking-widest uppercase mb-4 font-devanagari">त्वरित लिंक • Quick Links</h4>
+                        <ul class="space-y-2 text-xs text-slate-400">
+                            <li><button onclick="App.navigate('home')" class="hover:text-white transition">Home / मुख्य पृष्ठ</button></li>
+                            <li><button onclick="App.openReportModal()" class="hover:text-orange-400 transition font-bold text-amber-300">शिकायत दर्ज करें (Report Grievance)</button></li>
+                            <li><button onclick="App.navigate('track')" class="hover:text-white transition">शिकायत की स्थिति (Track Status)</button></li>
+                            <li><button onclick="App.openModal('citizen-login')" class="hover:text-white transition">Citizen Portal Login</button></li>
+                            <li><button onclick="App.openModal('staff-login')" class="hover:text-white transition">Authorized Ward Staff Portal</button></li>
+                        </ul>
+                    </div>
+
+                    <!-- Complaint Domains -->
+                    <div>
+                        <h4 class="text-amber-400 text-xs font-bold tracking-widest uppercase mb-4 font-devanagari">नागरिक श्रेणियां • Civic Domains</h4>
+                        <ul class="space-y-2 text-xs text-slate-400">
+                            <li><button onclick="App.openReportModal({ category: 'Waste Management' })" class="hover:text-emerald-400 transition flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2"></span>अपशिष्ट एवं स्वच्छता (Waste)</button></li>
+                            <li><button onclick="App.openReportModal({ category: 'Traffic Management' })" class="hover:text-amber-400 transition flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-2"></span>यातायात व सड़क सुरक्षा (Traffic)</button></li>
+                            <li><button onclick="App.openReportModal({ category: 'Energy Issues' })" class="hover:text-purple-400 transition flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-purple-500 mr-2"></span>विद्युत एवं प्रकाश (Energy)</button></li>
+                            <li><button onclick="App.openReportModal({ category: 'Miscellaneous Public Grievances' })" class="hover:text-blue-400 transition flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2"></span>नागरिक एवं विविध सेवाएं (Civil & Misc)</button></li>
+                        </ul>
+                    </div>
+
+                    <!-- Civic Helplines & Emergency -->
+                    <div>
+                        <h4 class="text-amber-400 text-xs font-bold tracking-widest uppercase mb-4 font-devanagari">आपातकालीन सेवाएं • Emergency Helplines</h4>
+                        <div class="p-3.5 rounded-2xl bg-slate-900 border border-amber-900/40 text-xs space-y-2.5 text-slate-300 shadow-inner">
+                            <div class="flex items-center space-x-1.5 text-amber-400 font-bold text-[11px]">
+                                <span>⚠️</span>
+                                <span>Immediate Life/Accident Hazard?</span>
+                            </div>
+                            <p class="text-[10px] text-slate-400">Do not wait for online ticket review. Dial 24x7 toll-free emergency responders:</p>
+                            <div class="grid grid-cols-2 gap-1.5 font-mono text-[11px] pt-1">
+                                <span class="bg-slate-950 px-2 py-1.5 rounded-lg text-center border border-slate-800 text-amber-200">Police: 112</span>
+                                <span class="bg-slate-950 px-2 py-1.5 rounded-lg text-center border border-slate-800 text-red-300">Fire: 101</span>
+                                <span class="bg-slate-950 px-2 py-1.5 rounded-lg text-center border border-slate-800 text-emerald-300">Ambulance: 108</span>
+                                <span class="bg-slate-950 px-2 py-1.5 rounded-lg text-center border border-slate-800 text-yellow-300">Power: 1912</span>
+                            </div>
+                            <div class="text-[10px] text-center text-slate-400 pt-0.5 border-t border-slate-800 font-mono">
+                                Jal Seva Helpline: <strong class="text-white">1916</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
+                    <div class="flex items-center space-x-2">
+                        <svg viewBox="0 0 100 100" class="w-5 h-5 shrink-0 opacity-80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="46" fill="#1e293b" stroke="#f59e0b" stroke-width="3"/>
+                            <g stroke="#38bdf8" stroke-width="2.5">
+                                <line x1="50" y1="12" x2="50" y2="88"/>
+                                <line x1="12" y1="50" x2="88" y2="50"/>
+                                <line x1="23" y1="23" x2="77" y2="77"/>
+                                <line x1="23" y1="77" x2="77" y2="23"/>
+                            </g>
+                            <circle cx="50" cy="50" r="7" fill="#f59e0b"/>
+                        </svg>
+                        <p>© 2026 JanSahayak AI • जनहितैषी नागरिक सेवा • Government & Municipal Civic Tech Standards</p>
+                    </div>
+                    <div class="flex space-x-6 mt-4 sm:mt-0 font-medium">
+                        <button onclick="App.openModal('privacy')" class="hover:text-amber-400 transition">गोपनीयता नीति (Privacy)</button>
+                        <button onclick="App.openModal('terms')" class="hover:text-amber-400 transition">नागरिक चार्टर (Terms)</button>
+                        <button onclick="App.openModal('contact')" class="hover:text-amber-400 transition">सहायता कक्ष (Helpdesk)</button>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        
+        
+        <!-- Floating Trigger Button -->
+        <div id="ai-chat-trigger" class="fixed bottom-6 right-6 z-50">
+            <button onclick="AIChatbot.toggle()" class="flex items-center space-x-2.5 px-4 py-3 rounded-full bg-gradient-to-r from-blue-700 via-indigo-600 to-blue-800 text-white font-bold text-xs shadow-xl shadow-blue-600/30 hover:shadow-2xl hover:scale-105 transition transform">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                <span>Sahayak AI • सहायक</span>
+                <span class="text-base">🤖</span>
+            </button>
+        </div>
+
+        <!-- Chat Modal / Drawer -->
+        <div id="ai-chat-drawer" class="hidden fixed bottom-6 right-6 z-50 w-96 max-w-[calc(100vw-2rem)] h-[540px] max-h-[85vh] bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col chat-window">
+            <!-- Header -->
+            <div class="px-5 py-4 bg-gradient-to-r from-blue-700 via-indigo-700 to-blue-800 text-white flex items-center justify-between shadow-xs">
+                <div class="flex items-center space-x-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-white/20 backdrop-blur-xs flex items-center justify-center font-bold text-base">
+                        🤖
+                    </div>
+                    <div>
+                        <div class="font-extrabold text-sm tracking-tight flex items-center space-x-1.5">
+                            <span>Sahayak AI</span>
+                            <span class="text-[9px] bg-emerald-400 text-slate-900 font-bold px-1.5 py-0.2 rounded-full uppercase">Verified</span>
+                        </div>
+                        <div class="text-[10px] text-blue-100 font-medium">JanSahayak Civic Redressal Companion</div>
+                    </div>
+                </div>
+                <button onclick="AIChatbot.toggle()" class="p-1.5 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Messages Stream Area -->
+            <div id="ai-messages-list" class="flex-1 p-4 overflow-y-auto space-y-3.5 text-xs">
+                <!-- Initial Welcome Message -->
+                <div class="flex items-start space-x-2.5">
+                    <div class="w-6 h-6 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs shrink-0">
+                        🤖
+                    </div>
+                    <div class="bg-slate-100 text-slate-800 p-3.5 rounded-2xl rounded-tl-none border border-slate-200/80 leading-relaxed">
+                        <p class="font-bold text-slate-900 mb-1">Namaste! 🙏</p>
+                        <p>I am <strong>Sahayak AI</strong>. <strong>How can I help you to use me?</strong> I can look up live grievance tickets, guide you through problem reporting, explain municipal categories, or share emergency civic numbers.</p>
+                        <div class="mt-3 flex flex-wrap gap-1.5">
+                            <button onclick="AIChatbot.sendPreset('Track complaint JS-2026-000101')" class="px-2 py-1 rounded-md bg-white border border-slate-300 text-[10px] font-semibold text-blue-700 hover:bg-blue-50">
+                                🔍 Track JS-2026-000101
+                            </button>
+                            <button onclick="AIChatbot.sendPreset('How do I report an issue?')" class="px-2 py-1 rounded-md bg-white border border-slate-300 text-[10px] font-semibold text-blue-700 hover:bg-blue-50">
+                                📋 How to report
+                            </button>
+                            <button onclick="AIChatbot.sendPreset('Civic Emergency Helplines')" class="px-2 py-1 rounded-md bg-white border border-slate-300 text-[10px] font-semibold text-red-700 hover:bg-red-50">
+                                🚨 Emergencies
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Box -->
+            <div class="p-3 bg-slate-50 border-t border-slate-200">
+                <form onsubmit="AIChatbot.handleSubmit(event)" class="flex items-center space-x-2">
+                    <input id="ai-chat-input" type="text" placeholder="How can I help you to use me?..."
+                           class="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-xs focus:ring-2 focus:ring-blue-500 shadow-2xs" />
+                    <button type="submit" class="p-2.5 rounded-xl bg-blue-700 text-white hover:bg-blue-800 transition shadow-xs">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+    
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modal-container"></div>
+
+    <!-- Toast Notifications Floating Stack -->
+    <div id="toast-container" class="fixed top-20 right-6 z-50 space-y-2 pointer-events-none"></div>
+
+    <!-- Application Script Inclusions -->
+    <script src="/js/api.js"></script>
+    <script src="/js/components/navbar.js"></script>
+    <script src="/js/components/footer.js"></script>
+    <script src="/js/components/home.js"></script>
+    <script src="/js/components/reportModal.js"></script>
+    <script src="/js/components/track.js"></script>
+    <script src="/js/components/myComplaints.js"></script>
+    <script src="/js/components/staffDashboard.js"></script>
+    <script src="/js/components/adminPanel.js"></script>
+    <script src="/js/components/aiChatbot.js"></script>
+    <script src="/js/components/modals.js"></script>
+    <script src="/js/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,213 @@
+/* JanSahayak AI - Authentic Indian Civic Texture & Stylesheet */
+
+:root {
+    /* Indian Civic Palette */
+    --civic-saffron: #f97316;
+    --civic-saffron-dark: #ea580c;
+    --civic-saffron-deep: #c2410c;
+    --civic-green: #059669;
+    --civic-green-deep: #047857;
+    --civic-navy: #0b2545;
+    --civic-navy-deep: #07172c;
+    --civic-gold: #d97706;
+    --civic-gold-light: #fef3c7;
+    --civic-ivory: #fbf7ee;
+    --civic-border: #e6dfcf;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans Devanagari', sans-serif;
+    background-color: #faf6ed;
+    color: #1e293b;
+    overflow-x: hidden;
+}
+
+/* Authentic Indian Flag (Tiranga) Theme & Wallpaper Texture */
+.indian-jaali-bg {
+    background-color: #faf6ee;
+    background-image: 
+        radial-gradient(ellipse at 50% 0%, rgba(255, 153, 51, 0.16) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 100%, rgba(19, 136, 8, 0.12) 0%, transparent 60%),
+        url('/images/indian_bg_texture.jpg');
+    background-repeat: no-repeat, no-repeat, repeat;
+    background-size: 100% 650px, 100% 650px, 280px auto;
+    background-position: top center, bottom center, 0 0;
+    background-attachment: scroll, scroll, fixed;
+}
+
+.hero-mandala-bg {
+    background: radial-gradient(circle at 30% 25%, rgba(255, 237, 213, 0.85) 0%, rgba(254, 243, 199, 0.45) 45%, rgba(251, 247, 238, 0.2) 80%);
+}
+
+/* Authentic Tiranga Ribbon with Gold Trims */
+.tiranga-top-bar {
+    height: 5px;
+    background: linear-gradient(90deg, 
+        #FF9933 0%, #FF9933 33.3%, 
+        #FFFFFF 33.3%, #FFFFFF 66.6%, 
+        #138808 66.6%, #138808 100%
+    );
+    border-bottom: 1px solid rgba(217, 119, 6, 0.4);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* Glassmorphism Civic Navigation */
+.nav-glass {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--civic-border);
+}
+
+/* Indian Heritage Emblem Glow */
+.emblem-ring {
+    box-shadow: 0 0 0 2px #fef3c7, 0 4px 14px rgba(217, 119, 6, 0.25);
+}
+
+/* Category Card with Traditional Ornamental Touches */
+.category-card {
+    transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--civic-border);
+    backdrop-filter: blur(4px);
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 32px -8px rgba(11, 37, 69, 0.15);
+    background-color: #ffffff;
+}
+
+.category-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    opacity: 0.9;
+    transition: height 0.25s ease;
+}
+
+.category-card:hover::before {
+    height: 6px;
+    opacity: 1;
+}
+
+.category-waste::before { 
+    background: linear-gradient(90deg, #10B981, #047857); 
+}
+.category-traffic::before { 
+    background: linear-gradient(90deg, #F59E0B, #D97706); 
+}
+.category-energy::before { 
+    background: linear-gradient(90deg, #8B5CF6, #6D28D9); 
+}
+.category-misc::before { 
+    background: linear-gradient(90deg, #2563EB, #1E3A8A); 
+}
+
+/* Corner Indian Motif Accent on Cards */
+.indian-corner-accent {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 42px;
+    height: 42px;
+    background: radial-gradient(circle at top right, rgba(217, 119, 6, 0.18) 0%, transparent 72%);
+    pointer-events: none;
+}
+
+/* Timeline Step Connector */
+.timeline-step {
+    position: relative;
+}
+
+.timeline-step::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    width: 100%;
+    height: 3px;
+    background-color: #e2e8f0;
+    z-index: 1;
+}
+
+.timeline-step:last-child::after {
+    display: none;
+}
+
+.timeline-step.completed::after {
+    background: linear-gradient(90deg, #059669 0%, #10b981 100%);
+}
+
+.timeline-step.active::after {
+    background: linear-gradient(90deg, #059669 0%, #e2e8f0 100%);
+}
+
+/* AI Highlight Box with Saffron-Navy Gradient */
+.ai-badge {
+    background: linear-gradient(135deg, #FFFBEB 0%, #EFF6FF 100%);
+    border: 1px solid #FCD34D;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #fbf7ee;
+}
+::-webkit-scrollbar-thumb {
+    background: #d1c7b7;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #b8ac99;
+}
+
+/* Leaflet Map overrides for clean responsive civic look */
+.leaflet-container {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.75rem;
+    z-index: 10;
+    border: 1px solid var(--civic-border);
+}
+
+/* Floating AI Chat Widget Animation */
+.chat-window {
+    animation: chatSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes chatSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Pulsing Badge for Urgent/Critical Alerts */
+.pulse-badge {
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+    animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 8px rgba(220, 38, 38, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+    }
+}

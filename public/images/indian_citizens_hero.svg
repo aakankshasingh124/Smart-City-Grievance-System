@@ -1,0 +1,263 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 500" width="100%" height="100%">
+  <defs>
+    <!-- Sky & Aura Gradients with Tiranga Hues -->
+    <linearGradient id="tirangaSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFF3E0" stop-opacity="0.9"/>
+      <stop offset="45%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#E8F5E9" stop-opacity="0.9"/>
+    </linearGradient>
+
+    <!-- Warm Indian Skin Tones -->
+    <linearGradient id="skinElder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A5673F"/>
+      <stop offset="100%" stop-color="#8A4E29"/>
+    </linearGradient>
+    <linearGradient id="skinWoman" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#C58557"/>
+      <stop offset="100%" stop-color="#A96B3E"/>
+    </linearGradient>
+    <linearGradient id="skinWorker" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#93552C"/>
+      <stop offset="100%" stop-color="#78411C"/>
+    </linearGradient>
+    <linearGradient id="skinYouth" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#BA7A4D"/>
+      <stop offset="100%" stop-color="#9E5F33"/>
+    </linearGradient>
+
+    <!-- Clothing Gradients -->
+    <linearGradient id="saffronGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF9933"/>
+      <stop offset="100%" stop-color="#E65100"/>
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2E7D32"/>
+      <stop offset="100%" stop-color="#1B5E20"/>
+    </linearGradient>
+    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1565C0"/>
+      <stop offset="100%" stop-color="#0D47A1"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD54F"/>
+      <stop offset="100%" stop-color="#FFA000"/>
+    </linearGradient>
+
+    <!-- Card Shadow Filter -->
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0F172A" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Background Base Container -->
+  <rect width="700" height="500" rx="28" fill="url(#tirangaSky)"/>
+
+  <!-- Indian Sun & Mandala Radiance in Background -->
+  <circle cx="350" cy="220" r="160" fill="#FFF8E1" opacity="0.6"/>
+  <circle cx="350" cy="220" r="120" fill="#FFE082" opacity="0.3"/>
+  <circle cx="350" cy="220" r="80" fill="#FFCA28" opacity="0.25"/>
+
+  <!-- Ashoka Chakra subtle watermark in center sky -->
+  <g opacity="0.18" transform="translate(350, 160)">
+    <circle cx="0" cy="0" r="70" fill="none" stroke="#0D47A1" stroke-width="3"/>
+    <circle cx="0" cy="0" r="16" fill="none" stroke="#0D47A1" stroke-width="2"/>
+    <!-- 24 Spokes -->
+    <line x1="0" y1="-70" x2="0" y2="70" stroke="#0D47A1" stroke-width="1.8"/>
+    <line x1="-70" y1="0" x2="70" y2="0" stroke="#0D47A1" stroke-width="1.8"/>
+    <line x1="-49.5" y1="-49.5" x2="49.5" y2="49.5" stroke="#0D47A1" stroke-width="1.8"/>
+    <line x1="-49.5" y1="49.5" x2="49.5" y2="-49.5" stroke="#0D47A1" stroke-width="1.8"/>
+    <line x1="-67.6" y1="-18.1" x2="67.6" y2="18.1" stroke="#0D47A1" stroke-width="1.5"/>
+    <line x1="-18.1" y1="-67.6" x2="18.1" y2="67.6" stroke="#0D47A1" stroke-width="1.5"/>
+    <line x1="-67.6" y1="18.1" x2="67.6" y2="-18.1" stroke="#0D47A1" stroke-width="1.5"/>
+    <line x1="-18.1" y1="67.6" x2="18.1" y2="-67.6" stroke="#0D47A1" stroke-width="1.5"/>
+    <line x1="-59.6" y1="-36.4" x2="59.6" y2="36.4" stroke="#0D47A1" stroke-width="1.5"/>
+    <line x1="-36.4" y1="-59.6" x2="36.4" y2="59.6" stroke="#0D47A1" stroke-width="1.5"/>
+    <line x1="-59.6" y1="36.4" x2="59.6" y2="-36.4" stroke="#0D47A1" stroke-width="1.5"/>
+    <line x1="-36.4" y1="59.6" x2="36.4" y2="-59.6" stroke="#0D47A1" stroke-width="1.5"/>
+  </g>
+
+  <!-- City Skyline Silhouette (Modern Indian Municipality) -->
+  <g fill="#94A3B8" opacity="0.32">
+    <!-- India Gate Silhouette -->
+    <path d="M310 260 L310 190 L390 190 L390 260 L375 260 L375 210 Q350 195 325 210 L325 260 Z"/>
+    <rect x="305" y="185" width="90" height="6" rx="2"/>
+    <rect x="320" y="177" width="60" height="8" rx="2"/>
+
+    <!-- High-rise Buildings & Towers -->
+    <rect x="80" y="170" width="45" height="110" rx="3"/>
+    <rect x="135" y="200" width="40" height="80" rx="2"/>
+    <rect x="185" y="150" width="55" height="130" rx="3"/>
+    <rect x="250" y="210" width="35" height="70" rx="2"/>
+
+    <rect x="420" y="180" width="50" height="100" rx="3"/>
+    <rect x="480" y="140" width="45" height="140" rx="3"/>
+    <rect x="535" y="190" width="40" height="90" rx="2"/>
+    <rect x="585" y="160" width="50" height="120" rx="3"/>
+
+    <!-- Solar streetlamp & power towers -->
+    <line x1="285" y1="180" x2="285" y2="280" stroke="#94A3B8" stroke-width="2"/>
+    <ellipse cx="285" cy="180" rx="8" ry="3"/>
+  </g>
+
+  <!-- Green Parkland & Clean Road Surface -->
+  <path d="M0 270 Q350 250 700 270 L700 500 L0 500 Z" fill="#E2E8F0" opacity="0.6"/>
+  <path d="M0 320 Q350 300 700 320 L700 500 L0 500 Z" fill="#F8FAFC"/>
+
+  <!-- ================= GROUP OF DIVERSE INDIAN CITIZENS ================= -->
+
+  <!-- 1. Indian Senior Citizen (Elder Uncle) - Left -->
+  <g id="citizen-elder" transform="translate(100, 180)">
+    <!-- Body / Kurta & Nehru Jacket -->
+    <path d="M20 180 L25 100 L55 85 L85 100 L90 180 Z" fill="#FFF8E7"/>
+    <!-- Maroon Nehru Jacket -->
+    <path d="M30 180 L35 95 L55 88 L75 95 L80 180 L55 180 Z" fill="#7F1D1D"/>
+    <!-- Brass Buttons -->
+    <circle cx="55" cy="115" r="2" fill="#F59E0B"/>
+    <circle cx="55" cy="135" r="2" fill="#F59E0B"/>
+    <circle cx="55" cy="155" r="2" fill="#F59E0B"/>
+
+    <!-- Neck & Head -->
+    <rect x="47" y="70" width="16" height="18" fill="url(#skinElder)" rx="4"/>
+    <circle cx="55" cy="52" r="24" fill="url(#skinElder)"/>
+
+    <!-- Grey/White Hair & Moustache -->
+    <path d="M33 50 C31 35 45 28 55 28 C65 28 79 35 77 50 C75 38 65 32 55 32 C45 32 35 38 33 50 Z" fill="#E2E8F0"/>
+    <!-- Moustache -->
+    <path d="M44 63 Q55 60 55 64 Q55 60 66 63 Q55 68 44 63 Z" fill="#E2E8F0"/>
+
+    <!-- Eyeglasses (Spectacles) -->
+    <circle cx="46" cy="50" r="6" fill="none" stroke="#D97706" stroke-width="1.8"/>
+    <circle cx="64" cy="50" r="6" fill="none" stroke="#D97706" stroke-width="1.8"/>
+    <line x1="52" y1="50" x2="58" y2="50" stroke="#D97706" stroke-width="1.8"/>
+
+    <!-- Gentle Smile -->
+    <path d="M50 69 Q55 72 60 69" stroke="#5C3419" stroke-width="1.5" fill="none"/>
+  </g>
+
+  <!-- 2. Indian Woman Professional / Citizen - Center-Left (Hero Complainant with Smartphone) -->
+  <g id="citizen-woman" transform="translate(210, 140)">
+    <!-- Flowing Saffron & Peacock Blue Salwar / Dupatta -->
+    <path d="M20 220 L35 120 L75 105 L115 120 L130 220 Z" fill="#0284C7"/>
+    <!-- Elegant Saffron / Kesariya Dupatta Draped Across Shoulder -->
+    <path d="M25 220 L40 125 Q75 110 110 135 L120 220 L95 220 L65 145 L35 220 Z" fill="url(#saffronGrad)"/>
+
+    <!-- Arms & Smartphone -->
+    <!-- Left arm holding mobile -->
+    <path d="M35 125 L10 170 L25 185 L50 145 Z" fill="url(#skinWoman)"/>
+    <!-- Right arm -->
+    <path d="M115 125 L135 170 L120 185 L100 145 Z" fill="url(#skinWoman)"/>
+
+    <!-- Smartphone with glowing JanSahayak Green Check -->
+    <rect x="5" y="160" width="30" height="52" rx="5" fill="#0F172A" stroke="#FFD54F" stroke-width="1.5"/>
+    <rect x="7" y="164" width="26" height="44" rx="3" fill="#047857"/>
+    <!-- Green ticket success badge on screen -->
+    <circle cx="20" cy="180" r="7" fill="#FFFFFF"/>
+    <path d="M16 180 L19 183 L24 177" stroke="#047857" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <text x="20" y="196" font-family="sans-serif" font-size="5" font-weight="bold" fill="#FFFFFF" text-anchor="middle">RESOLVED</text>
+
+    <!-- Neck & Face -->
+    <rect x="66" y="88" width="18" height="22" fill="url(#skinWoman)" rx="4"/>
+    <circle cx="75" cy="68" r="26" fill="url(#skinWoman)"/>
+
+    <!-- Beautiful Long Black Hair & Braid -->
+    <path d="M50 68 C48 38 65 35 75 35 C85 35 102 38 100 68 C96 46 88 40 75 40 C62 40 54 46 50 68 Z" fill="#1E293B"/>
+    <path d="M49 68 C45 90 48 130 52 160 C55 160 58 130 56 68 Z" fill="#1E293B"/>
+
+    <!-- Traditional Red Bindi on Forehead -->
+    <circle cx="75" cy="58" r="2.2" fill="#DC2626"/>
+
+    <!-- Expressive Eyes & Smile -->
+    <ellipse cx="66" cy="66" rx="2.8" ry="1.8" fill="#1E293B"/>
+    <ellipse cx="84" cy="66" rx="2.8" ry="1.8" fill="#1E293B"/>
+    <path d="M68 78 Q75 83 82 78" stroke="#78350F" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+    <!-- Small Gold Earrings (Jhumka) -->
+    <circle cx="51" cy="73" r="2.5" fill="#F59E0B"/>
+    <circle cx="99" cy="73" r="2.5" fill="#F59E0B"/>
+  </g>
+
+  <!-- 3. Indian Municipal Sanitation & Civic Officer - Center-Right -->
+  <g id="citizen-worker" transform="translate(365, 145)">
+    <!-- Swachh Bharat Municipal Uniform / High-Vis Jacket -->
+    <path d="M20 215 L30 115 L75 100 L120 115 L130 215 Z" fill="#047857"/>
+    <!-- High-Visibility Reflective Saffron & Silver Strips -->
+    <rect x="34" y="140" width="82" height="14" fill="#FF9933" rx="2"/>
+    <rect x="34" y="144" width="82" height="6" fill="#F8FAFC"/>
+    <rect x="40" y="180" width="70" height="12" fill="#FF9933" rx="2"/>
+    <rect x="40" y="183" width="70" height="6" fill="#F8FAFC"/>
+
+    <!-- Swachh Bharat Logo on chest badge -->
+    <circle cx="55" cy="125" r="7" fill="#FFFFFF"/>
+    <circle cx="53" cy="125" r="2" fill="#047857"/>
+    <circle cx="57" cy="125" r="2" fill="#047857"/>
+    <line x1="51" y1="125" x2="59" y2="125" stroke="#047857" stroke-width="0.8"/>
+
+    <!-- Right Hand Giving Reassuring Thumbs Up -->
+    <path d="M120 120 L150 150 L145 170 L110 145 Z" fill="url(#skinWorker)"/>
+    <!-- Thumbs Up Fist -->
+    <circle cx="152" cy="155" r="8" fill="url(#skinWorker)"/>
+    <rect x="150" y="142" width="6" height="12" rx="3" fill="url(#skinWorker)"/>
+
+    <!-- Neck & Face -->
+    <rect x="66" y="85" width="18" height="20" fill="url(#skinWorker)" rx="4"/>
+    <circle cx="75" cy="65" r="25" fill="url(#skinWorker)"/>
+
+    <!-- Neat Mustache & Proud Expression -->
+    <path d="M62 74 Q75 72 75 75 Q75 72 88 74 Q75 79 62 74 Z" fill="#1E293B"/>
+    <ellipse cx="66" cy="63" rx="2.5" ry="1.6" fill="#1E293B"/>
+    <ellipse cx="84" cy="63" rx="2.5" ry="1.6" fill="#1E293B"/>
+    <path d="M68 81 Q75 85 82 81" stroke="#5C3419" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+
+    <!-- Municipal Service Safety Cap with Tiranga Ribbon -->
+    <path d="M48 55 C48 35 60 30 75 30 C90 30 102 35 102 55 Z" fill="#065F46"/>
+    <path d="M42 55 L108 55 L104 59 L46 59 Z" fill="#047857"/>
+    <line x1="45" y1="53" x2="105" y2="53" stroke="#FF9933" stroke-width="2"/>
+  </g>
+
+  <!-- 4. Young Indian Student / Citizen - Right -->
+  <g id="citizen-youth" transform="translate(490, 175)">
+    <!-- Modern Casual Polo / Denim Look -->
+    <path d="M15 185 L25 105 L60 90 L95 105 L105 185 Z" fill="#1E3A8A"/>
+    <!-- Backpack Strap -->
+    <path d="M30 105 L45 185" stroke="#B45309" stroke-width="7" stroke-linecap="round"/>
+    <path d="M90 105 L75 185" stroke="#B45309" stroke-width="7" stroke-linecap="round"/>
+
+    <!-- Neck & Face -->
+    <rect x="51" y="74" width="18" height="20" fill="url(#skinYouth)" rx="4"/>
+    <circle cx="60" cy="54" r="23" fill="url(#skinYouth)"/>
+
+    <!-- Modern Styled Haircut -->
+    <path d="M38 52 C36 32 50 26 60 26 C72 26 84 32 82 52 C78 36 70 30 60 30 C50 30 42 36 38 52 Z" fill="#0F172A"/>
+
+    <!-- Smiling Young Face -->
+    <ellipse cx="52" cy="53" rx="2.4" ry="1.5" fill="#0F172A"/>
+    <ellipse cx="68" cy="53" rx="2.4" ry="1.5" fill="#0F172A"/>
+    <path d="M54 67 Q60 72 66 67" stroke="#5C3419" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- ================= BOTTOM TIRANGA BANNER & CIVIC MOTTO ================= -->
+  <g transform="translate(0, 420)">
+    <!-- Tricolor Triple Ribbon -->
+    <rect x="0" y="0" width="700" height="26" fill="#FF9933"/>
+    <rect x="0" y="26" width="700" height="28" fill="#FFFFFF"/>
+    <rect x="0" y="54" width="700" height="26" fill="#138808"/>
+
+    <!-- Center Ashoka Chakra in White Band -->
+    <circle cx="350" cy="40" r="12" fill="none" stroke="#000080" stroke-width="1.8"/>
+    <circle cx="350" cy="40" r="2.5" fill="#000080"/>
+    <g stroke="#000080" stroke-width="0.8">
+      <line x1="350" y1="28" x2="350" y2="52"/>
+      <line x1="338" y1="40" x2="362" y2="40"/>
+      <line x1="341.5" y1="31.5" x2="358.5" y2="48.5"/>
+      <line x1="341.5" y1="48.5" x2="358.5" y2="31.5"/>
+    </g>
+
+    <!-- Saffron & Green Text Mottos -->
+    <text x="175" y="45" font-family="'Noto Sans Devanagari', 'Inter', sans-serif" font-size="13" font-weight="900" fill="#9A3412" text-anchor="middle">
+      सशक्त नागरिक • पारदर्शी प्रशासन
+    </text>
+    <text x="525" y="45" font-family="'Noto Sans Devanagari', 'Inter', sans-serif" font-size="13" font-weight="900" fill="#166534" text-anchor="middle">
+      Empowered Citizens • Smart Solutions
+    </text>
+  </g>
+</svg>

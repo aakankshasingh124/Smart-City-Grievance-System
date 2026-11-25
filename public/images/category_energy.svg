@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Vidyut / Energy Board Indian Icon -->
+  <defs>
+    <linearGradient id="purpleGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#6D28D9"/>
+    </linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="30" fill="#FAF5FF" stroke="#8B5CF6" stroke-width="2"/>
+  <!-- Radiating Power Chakra Sunburst -->
+  <g stroke="#C4B5FD" stroke-width="1.5" opacity="0.6">
+    <line x1="32" y1="12" x2="32" y2="16"/>
+    <line x1="32" y1="48" x2="32" y2="52"/>
+    <line x1="12" y1="32" x2="16" y2="32"/>
+    <line x1="48" y1="32" x2="52" y2="32"/>
+    <line x1="18" y1="18" x2="21" y2="21"/>
+    <line x1="43" y1="43" x2="46" y2="46"/>
+    <line x1="46" y1="18" x2="43" y2="21"/>
+    <line x1="21" y1="43" x2="18" y2="46"/>
+  </g>
+  <!-- Central Circle with Vidyut Bolt -->
+  <circle cx="32" cy="32" r="18" fill="url(#purpleGold)"/>
+  <polygon points="34,18 24,32 31,32 28,46 40,30 33,30" fill="#FBBF24"/>
+</svg>

@@ -1,0 +1,22 @@
+{
+  "name": "jansahayak-ai",
+  "version": "1.0.0",
+  "description": "JanSahayak AI — AI-Powered Public Grievance Reporting and Tracking System",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js",
+    "test": "node tests/test_suite.js",
+    "seed": "node server/db/seed.js"
+  },
+  "keywords": [
+    "civic-tech",
+    "public-grievance",
+    "ai-categorization",
+    "smart-city",
+    "india",
+    "jansahayak"
+  ],
+  "author": "JanSahayak Civic Initiative",
+  "license": "MIT"
+}
